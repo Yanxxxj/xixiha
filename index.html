@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			div{
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				border:1px solid black;
+				text-align: center;
+				line-height: 50px;
+				font-size: 30px;
+				font-weight: bold;
+				color:white;
+			}
+			#redLight{
+				background-color: white;
+			}
+			#greenLight{
+				background-color: white;
+			}
+			#yellowLight{
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="redLight">
+			
+		</div>
+		<br/>
+		<div id="greenLight">
+			
+		</div>
+		<br/>
+		<div id="yellowLight">
+			
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="js/tools.js" ></script>
+<script type="text/javascript">
+
+//红灯亮5秒，绿灯亮3秒，黄灯亮二秒，如何让
+//三个灯不断交替重复亮灯
+
+
+//红灯的函数
+		
+	function redFunc(){
+		$("#redLight").style.backgroundColor="red";
+		let count = 5;
+		$("#redLight").innerHTML = count;
+		return new Promise(function(resolve,reject){
+			let myTimer = setInterval(()=>{
+				count--;
+				if(count<=0){
+					count=0;
+					window.clearInterval(myTimer);
+					$("#redLight").innerHTML="";
+					$("#redLight").style.background="white";
+					resolve();
+				}
+				$("#redLight").innerHTML = count;
+			}
+			,1000);
+		});
+		 
+	}
+	
+	//绿灯
+	function greenFunc(){
+		$("#greenLight").style.background="green";
+		let count = 3;
+		$("#greenLight").innerHTML = count;
+		return new Promise(function(resolve,reject){
+			let myTimer = setInterval(()=>{
+				count--;
+				if(count<=0){
+					count = 0;
+					window.clearInterval(myTimer);
+					$("#greenLight").style.background="white";
+					$("#greenLight").innerHTML="";
+					resolve();
+				}
+				$("#greenLight").innerHTML = count;
+			},1000);
+		});
+	}
+	
+	function yellowFunc(){
+		$("#yellowLight").style.background="yellow";
+		let count = 2;
+		$("#yellowLight").innerHTML = count;
+		return new Promise(function(resolve,reject){
+			let myTimer = setInterval(()=>{
+				count--;
+				if(count<=0){
+					count = 0;
+					window.clearInterval(myTimer);
+					$("#yellowLight").style.background="white";
+					$("#yellowLight").innerHTML="";
+					resolve();
+				}
+				$("#yellowLight").innerHTML = count;
+			},1000);
+		});
+	}
+	
+	function shine(){
+		redFunc().then(greenFunc).then(yellowFunc).then(shine);
+	}
+	window.onload = function(){
+		shine();
+	}
+	
+	function $(str){
+		if(str.charAt(0)=="#"){
+			return document.getElementById(str.substring(1));
+		}else if(str.charAt(0)=="."){
+			return document.getElementsByClassName(str.substring(1));
+		}else{
+			return document.getElementsByTagName(str);
+		}
+	}
+</script>
